@@ -1,0 +1,160 @@
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+apply plugin: 'com.huawei.agconnect'
+//apply plugin: 'com.hihonor.mcs.asplugin'
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+android {
+
+    namespace "com.moxiao.xgd"
+    compileSdkVersion 34
+//    compileSdkVersion flutter.compileSdkVersion
+    ndkVersion flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId "com.moxiao.xgd"
+//        ndk{
+//            abiFilters 'armeabi-v7a','arm64-v8a'
+//        }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : "com.moxiao.xgd",
+                JPUSH_APPKEY : "55e3a8be95ba1470bae4e077", // NOTE: JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+                VIVO_APPKEY : "5e66d6810bcf74d3e6c4ed1ccb87a47b", // VIVO平台注册的appkey
+                VIVO_APPID : "105855864", // VIVO平台注册的appid
+                OPPO_APPKEY : "OP-4974e3c2e11c405fa22c742b95c26835", // OPPO平台注册的appkey
+                OPPO_APPID : "OP-32777889", // OPPO平台注册的appid
+                OPPO_APPSECRET: "OP-dfaa7f4f9f70462886ec3c57221b7795",//OPPO平台注册的appsecret
+                XIAOMI_APPID  : "2882303761520384983",
+                XIAOMI_APPKEY : "5892038491983",
+
+        ]
+        // You can update the following values to match your application needs.
+        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
+        minSdkVersion 21
+//        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion flutter.targetSdkVersion
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+    }
+
+    signingConfigs {
+        release {
+            /*storeFile file("xgd.jks")
+            storePassword "123456"
+            keyAlias "key0"
+            keyPassword "123456"*/
+            storeFile file("xiguadao.keystore")
+            storePassword "xiguadao47189"
+            keyAlias "xiguadaoalias"
+            keyPassword "xiguadao47189"
+        }
+
+        debug{
+            /*storeFile file("xgd.jks")
+           storePassword "123456"
+           keyAlias "key0"
+           keyPassword "123456"*/
+            storeFile file("xiguadao.keystore")
+            storePassword "xiguadao47189"
+            keyAlias "xiguadaoalias"
+            keyPassword "xiguadao47189"
+        }
+    }
+
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            manifestPlaceholders = [applicationName: "android.app.Application"]
+        }
+
+        debug {
+            manifestPlaceholders = [applicationName: "android.app.Application"]
+        }
+
+        build {
+            manifestPlaceholders = [applicationName: "android.app.Application"]
+        }
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+//dependencies{
+//    // 华为
+////    implementation 'com.tencent.timpush:huawei:7.7.5282'
+//    // Google FCM
+////    implementation 'com.tencent.timpush:fcm:7.7.5282'
+//    // 小米
+//    implementation 'com.tencent.timpush:xiaomi:5.5.0'
+//    // OPPO
+//    implementation 'com.tencent.timpush:oppo:5.5.0'
+//    // vivo
+//    implementation 'com.tencent.timpush:vivo:5.5.0'
+////    // honor
+////    implementation 'com.tencent.timpush:honor:7.7.5282'
+//    // 魅族
+////    implementation 'com.tencent.timpush:meizu:7.7.5282'
+//}
+
+
+dependencies {
+    implementation 'com.tencent.timpush:huawei:8.4.6667'
+
+    implementation 'com.tencent.timpush:vivo:7.7.5282'
+    implementation 'com.tencent.timpush:xiaomi:7.7.5282'
+    implementation 'com.tencent.timpush:oppo:7.7.5282'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//    implementation 'cn.jiguang.sdk.plugin:vivo:5.5.0'
+//    implementation 'cn.jiguang.sdk.plugin:xiaomi:5.5.0.a'//版本号和对应的JPush版本号相同
+//    implementation 'cn.jiguang.sdk.plugin:oppo:5.5.0'//版本号和对应的JPush版本号相同
+    //implementation 'com.huawei.hms:push:6.12.0.300'
+
+    //厂商版本和 JPush SDK 版本保持一致
+//    implementation 'cn.jiguang.sdk.plugin:huawei:5.5.0'
+//    implementation 'com.tencent.timpush:huawei:7.7.5282'
+
+
+
+
+}

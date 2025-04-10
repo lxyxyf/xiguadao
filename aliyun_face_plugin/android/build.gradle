@@ -1,0 +1,64 @@
+group 'com.aliyun.face.aliyun_face_plugin'
+version '1.0'
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.1.0'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+
+        flatDir {
+            dirs 'libs'
+        }
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 31
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        minSdkVersion 18
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    
+     // 实人认证SDK
+    implementation(name: 'aliyun-base-2.3.25.1.240930172458', ext: 'aar')
+    implementation(name: 'aliyun-facade-2.3.25.1.240930172458', ext: 'aar')
+    implementation(name: 'aliyun-face-2.3.25.1.240930172458', ext: 'aar')
+    implementation(name: 'aliyun-faceaudio-2.3.25.1.240930172458', ext: 'aar')
+    implementation(name: 'aliyun-facelanguage-2.3.25.1.240930172458', ext: 'aar')
+    implementation(name: 'aliyun-facequality-2.3.25.1.240930172458', ext: 'aar')
+
+    implementation(name: 'aliyun-ocr-2.3.25.1.240930172458', ext: 'aar')
+    implementation(name: 'aliyun-photinus-2.3.25.1.240930172458', ext: 'aar')
+    implementation(name: 'aliyun-wishverify-2.3.25.1.240930172458', ext: 'aar')
+    implementation(name: 'Android-AliyunFaceGuard-10052', ext: 'aar')
+    implementation(name: 'APSecuritySDK-deepSec-7.0.1.20240528.jiagu', ext: 'aar')
+
+
+    // 实人认证三方依赖库
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    implementation 'com.squareup.okio:okio:1.14.0'
+    implementation 'com.alibaba:fastjson:1.2.83_noneautotype'
+    implementation 'com.aliyun.dpa:oss-android-sdk:2.9.11'
+}
